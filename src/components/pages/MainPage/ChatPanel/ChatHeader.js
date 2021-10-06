@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BiSearch, BiCommentAdd } from "react-icons/bi";
+import { Header } from "../../../style/mainStyle";
 
 function ChatHeader(props) {
   const [headerMenu, setHeaderMenu] = useState("");
@@ -144,37 +145,22 @@ function ChatHeader(props) {
 
   return (
     <div>
-      {" "}
-      <div
-        style={{
-          paddingTop: 30,
-          paddingBottom: 10,
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <h2 style={{ textAlign: "left", fontSize: "1.5rem", fontWeight: 600 }}>채팅</h2>
-        <ul style={{ display: "flex", gap: 15 }}>
-          <li>
-            <BiSearch
-              size={25}
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                handleHeaderMenuChange("채팅 찾기");
-              }}
-            />
-          </li>
-          <li>
-            <BiCommentAdd
-              size={25}
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                handleHeaderMenuChange("새 채팅");
-              }}
-            />
-          </li>
-        </ul>
-      </div>
+      <Header.Container>
+        <Header.Title>채팅</Header.Title>
+        <Header.Buttons>
+          <Header.SearchBtn
+            onClick={() => {
+              handleHeaderMenuChange("채팅 찾기");
+            }}
+          />
+
+          <Header.AddChatBtn
+            onClick={() => {
+              handleHeaderMenuChange("새 채팅");
+            }}
+          />
+        </Header.Buttons>
+      </Header.Container>
       {headerMenu && renderHeaderMenu(headerMenu)}
     </div>
   );

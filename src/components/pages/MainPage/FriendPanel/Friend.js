@@ -1,56 +1,28 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router";
 
-import { Image } from "react-bootstrap";
+import FriendDetail from "./FriendDetail";
+
+import { Item } from "../../../style/mainStyle";
 
 function Friend(props) {
+  console.log("friend props", props.friend);
   const [showProfile, setShowProfile] = useState(false);
 
-  const history = useHistory();
-  const handleOpenChat = () => {
-    alert(props.friend.email);
-    history.push(`/chat/${props.friend.email}`);
-  };
   return (
-    <div
-      style={{ padding: "10px 0" }} //호버시 배경 회색 추가 필요
-      onDoubleClick={() => {
-        handleOpenChat();
+    <Item.Container
+      onClick={() => {
+        setShowProfile((prev) => !prev);
       }}
     >
-      <div style={{ display: "flex", justifyContent: "left", alignItems: "center" }}>
-        <Image
-          src={props.friend.profileImage}
-          width={50}
-          height={50}
-          roundedCircle
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            setShowProfile((prev) => !prev);
-          }}
-        />
-        <div
-          style={{
-            width: "calc(100% - 60px)",
-            marginLeft: 10,
-          }}
-        >
-          <h4 style={{ fontSize: "1rem", fontWeight: 600 }}>{props.friend.name}</h4>
-          {props.friend.statusMessage && (
-            <p
-              style={{
-                overflowX: "hidden",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {props.friend.statusMessage}
-            </p>
-          )}
-        </div>
-      </div>
-      {showProfile && <div style={{ backgroundColor: "#ececec" }}>Profile</div> /* modal? */}
-    </div>
+      <Item.ImageBox>
+        <img src={props.friend.image} />
+      </Item.ImageBox>
+      <Item.TextBox>
+        <Item.Title> {props.friend.name}</Item.Title>
+        {props.friend.statusMsg && <Item.Content>{props.friend.statusMsg}</Item.Content>}
+      </Item.TextBox>
+      {showProfile && <FriendDetail info={props.friend} />}
+    </Item.Container>
   );
 }
 

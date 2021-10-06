@@ -1,11 +1,65 @@
-body {
+* {
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+}
+*:focus {
+  outline: none;
+}
+ul,
+ol {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+img {
+  width: 100%;
+  height: auto;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+/* fonts */
+@font-face {
+  font-family: "NanumBarunGothic";
+  src: url(./assets/fonts/NanumBarunGothicLight.ttf);
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "NanumBarunGothic";
+  src: url(./assets/fonts/NanumBarunGothic.ttf);
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "NanumBarunGothic";
+  src: url(./assets/fonts/NanumBarunGothicBold.ttf);
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Barlow";
+  src: url(./assets/fonts/Barlow-Thin.ttf);
+  font-style: normal;
+  font-weight: 100;
+}
+@font-face {
+  font-family: "Barlow";
+  src: url(./assets/fonts/Barlow-Light.ttf);
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Barlow";
+  src: url(./assets/fonts/Barlow-Regular.ttf);
+  font-style: normal;
+  font-weight: 400;
+}
+
+body {
+  font-family: "NanumBarunGothic", sans-serif;
 }

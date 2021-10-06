@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-import TabPanel from "./MainPage/TabPanel";
 import FriendPanel from "./MainPage/FriendPanel";
 import ChatPanel from "./MainPage/ChatPanel";
 import MorePanel from "./MainPage/MorePanel";
+import TabPanel from "./MainPage/TabPanel";
 
 function MainPage() {
   const [tab, setTab] = useState("friend");
@@ -26,10 +26,10 @@ function MainPage() {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <TabPanel tab={tab} handleTab={handleTab} />
+    <>
       {renderMainPanel()}
-    </div>
+      <TabPanel tab={tab} handleTab={handleTab} />
+    </>
   );
 }
 

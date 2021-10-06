@@ -10,9 +10,8 @@ import MainPage from "./components/pages/MainPage";
 import LoginPage from "./components/pages/LoginPage";
 import RegisterPage from "./components/pages/RegisterPage";
 import ChatPage from "./components/pages/ChatPage";
-import Loading from "./components/pages/Loading";
+import LoadingPage from "./components/pages/LoadingPage";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 function App() {
@@ -34,7 +33,7 @@ function App() {
   }, []);
 
   if (isLoading) {
-    return <Loading />;
+    return <LoadingPage />;
   }
 
   return (
@@ -55,6 +54,10 @@ function App() {
         <Route path="/main">
           {/* 임시 메인 페이지 라우터*/}
           <MainPage />
+        </Route>
+        <Route path="/loading">
+          {/* 임시 로딩 페이지 라우터*/}
+          <LoadingPage />
         </Route>
       </Switch>
     </div>

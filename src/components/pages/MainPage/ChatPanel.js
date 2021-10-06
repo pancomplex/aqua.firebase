@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import ChatHeader from "./ChatPanel/ChatHeader";
 import ChatList from "./ChatPanel/ChatList";
 
+import * as Main from "../../style/mainStyle";
+
 import testFriendImage1 from "../../../assets/images/UTH.png"; // 임시
 import testFriendImage2 from "../../../assets/images/KJG.png"; // 임시
 import testFriendImage3 from "../../../assets/images/CGS.png"; // 임시
@@ -51,17 +53,11 @@ function ChatPanel() {
     }
   };
   return (
-    <div
-      style={{
-        width: "100%",
-        padding: "0 20px 0 80px",
-        boxSizing: "border-box",
-      }}
-    >
+    <Main.Wrapper>
       <ChatHeader renderSearched={renderSearched} />
 
       <ChatList chatData={isSearching ? searchedChatData : chatData} />
-    </div>
+    </Main.Wrapper>
   );
 }
 

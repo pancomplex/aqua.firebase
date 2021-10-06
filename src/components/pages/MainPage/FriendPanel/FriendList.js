@@ -2,7 +2,14 @@ import React, { useState } from "react";
 
 import Friend from "./Friend";
 
+import { List } from "../../../style/mainStyle";
+
 function FriendList(props) {
+  console.log("list props", props.friendData);
+  console.log("list props", props.friendData[0]);
+  props.friendData.map((friend, index) => {
+    console.log("mappingData", friend);
+  });
   const renderFriends = () => {
     let friendArray = [];
     props.friendData.map((friend, index) => {
@@ -14,19 +21,10 @@ function FriendList(props) {
   };
 
   return (
-    <div>
-      <h5
-        style={{
-          marginTop: 10,
-          fontSize: "0.8rem",
-          color: "#777",
-          textAlign: "left",
-        }}
-      >
-        친구 {props.friendData.length}
-      </h5>
+    <List.Container>
+      <List.Title>친구 ({props.friendData.length})</List.Title>
       {renderFriends()}
-    </div>
+    </List.Container>
   );
 }
 

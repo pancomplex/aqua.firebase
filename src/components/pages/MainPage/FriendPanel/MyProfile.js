@@ -1,30 +1,22 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Image } from "react-bootstrap";
-import testProfileImage from "../../../../assets/images/testProfileImage.jpg"; // 임시
+
+import { Item } from "../../../style/mainStyle";
 
 function MyProfile() {
-  const userInfo = useSelector((state) => state.user.currentUser);
-
-  let userStatusMessage = "test"; // 임시
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   return (
-    <div style={{ padding: "10px 0" }}>
-      <div style={{ display: "flex", justifyContent: "left", alignItems: "center" }}>
-        <Image src={testProfileImage} width={60} roundedCircle style={{ cursor: "pointer" }} />
-        <div
-          style={{
-            marginLeft: 10,
-            width: "calc(100% - 60px)",
-          }}
-        >
-          <h4 style={{ margin: 0, fontSize: "1rem", fontWeight: 600 }}>
-            {userInfo && userInfo.userName}
-          </h4>
-          {userStatusMessage && <p style={{ margin: 0 }}>{userStatusMessage}</p>}
-        </div>
-      </div>
-    </div>
+    <Item.Container>
+      <Item.ImageBox size="3.5rem">
+        <img src={currentUser.photoURL} />
+      </Item.ImageBox>
+      <Item.TextBox margin="3.5rem">
+        {/* TextBox의 margin은 ImageBox의 size와 일치시켜야함 */}
+        <Item.Title>{currentUser.displayName}</Item.Title>
+        {currentUser.statusMsg && <Item.Content>{currentUser.statusMsg}</Item.Content>}
+      </Item.TextBox>
+    </Item.Container>
   );
 }
 

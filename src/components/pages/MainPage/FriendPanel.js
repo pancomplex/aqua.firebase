@@ -1,50 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
+
+import { getDatabase, get, ref, onChildAdded, onChildRemoved } from "firebase/database";
 
 import FriendHeader from "./FriendPanel/FriendHeader";
 import MyProfile from "./FriendPanel/MyProfile";
 import FriendList from "./FriendPanel/FriendList";
-import Partition from "../../common/Partition";
+
+import * as Main from "../../style/mainStyle";
 
 import testFriendImage1 from "../../../assets/images/UTH.png"; // 임시
 import testFriendImage2 from "../../../assets/images/KJG.png"; // 임시
 import testFriendImage3 from "../../../assets/images/CGS.png"; // 임시
+import { RiContactsBookLine } from "react-icons/ri";
 
 function FriendPanel() {
+  // useSelector
+  const currentUser = useSelector((state) => state.user.currentUser);
+
+  // firebase
+  const database = getDatabase();
+  const friendListRef = ref(database, "users/" + currentUser.uid + "/friends");
+
+  // useState
+  const [friendList, setFriendList] = useState([]);
+  const [friendData, setFriendData] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [friendData, setFriendData] = useState([
-    {
-      name: "엄태혁",
-      email: "test1@test.test",
-      statusMessage: "test",
-      profileImage: testFriendImage1,
-    },
-    {
-      name: "김정국",
-      email: "test2@test.test",
-      statusMessage: "test",
-      profileImage: testFriendImage2,
-    },
-    {
-      name: "차광성",
-      email: "test3@test.test",
-      statusMessage: "test",
-      profileImage: testFriendImage3,
-    },
-    {
-      name: "차광선",
-      email: "test3@test.test",
-      statusMessage: "test",
-      profileImage: testFriendImage3,
-    },
-  ]);
   const [searchedFriendData, setSearchedFriendData] = useState([]);
+
+  // useEffect
+  useEffect(() => {
+    addFriendListener();
+    // removeFriendListener();
+  }, [console.log(friendList)]);
+
+  const addFriendListener = () => {
+    let updatedFriendList = [];
+    onChildAdded(friendListRef, (snapshot) => {
+      updatedFriendList.push(snapshot.key);
+      const friendSet = new Set(updatedFriendList);
+      updatedFriendList = [...friendSet];
+      setFriendList(updatedFriendList);
+      makeFriendData(updatedFriendList);
+    });
+  };
+
+  // 친구 삭제시 업데이트 추후 추가 예정
+  // const removeFriendListener = () => {
+  //   onChildRemoved(friendListRef, (snapshot) => {
+
+  //   });
+  // };
+
+  // Make Friend Data
+  const makeFriendData = (friendUidArray) => {
+    let updatedFriendData = [];
+    friendUidArray.map((friendUid) => {
+      get(ref(database, "users/" + friendUid)).then((snapshot) => {
+        updatedFriendData.push(snapshot.val());
+      });
+    });
+    setFriendData(updatedFriendData);
+  };
 
   const renderSearched = (input) => {
     setIsSearching(true);
 
     if (input) {
       let friendDataArray = [...friendData];
-      console.log(input);
       setSearchedFriendData(
         friendDataArray.filter((friend) => {
           let regex = new RegExp(input);
@@ -55,26 +78,20 @@ function FriendPanel() {
       setIsSearching(false);
     }
   };
+
   return (
-    <div
-      style={{
-        width: "100%",
-        padding: "0 20px 0 80px",
-        boxSizing: "border-box",
-      }}
-    >
+    <Main.Wrapper>
       <FriendHeader renderSearched={renderSearched} />
       {isSearching ? (
         <FriendList friendData={searchedFriendData} />
       ) : (
         <>
           <MyProfile />
-          <Partition />
-          {/* added friend? */}
+          <Main.Partition />
           <FriendList friendData={friendData} />
         </>
       )}
-    </div>
+    </Main.Wrapper>
   );
 }
 
