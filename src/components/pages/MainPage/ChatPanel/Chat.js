@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 
-import { Image } from "react-bootstrap";
-
 function Chat(props) {
   const [showProfile, setShowProfile] = useState(false);
 
@@ -19,7 +17,7 @@ function Chat(props) {
       }}
     >
       <div style={{ display: "flex", justifyContent: "left", alignItems: "center" }}>
-        <Image
+        {/* <Image
           src={props.chat.profileImage}
           width={50}
           height={50}
@@ -28,7 +26,7 @@ function Chat(props) {
           onClick={() => {
             setShowProfile((prev) => !prev);
           }}
-        />
+        /> */}
         <div
           style={{
             width: "calc(100% - 130px)",

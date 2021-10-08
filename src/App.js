@@ -21,9 +21,9 @@ function App() {
   const isLoading = useSelector((state) => state.user.isLoading);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
-        dispatch(setUser(user));
+        await dispatch(setUser(user));
         history.push("/");
       } else {
         history.push("/login");

@@ -105,7 +105,7 @@ function FriendHeader(props) {
   };
 
   return (
-    <div>
+    <>
       <Header.Container>
         <Header.Title>친구</Header.Title>
         <Header.Buttons>
@@ -123,7 +123,7 @@ function FriendHeader(props) {
         </Header.Buttons>
       </Header.Container>
       {headerMenu && renderHeaderMenu(headerMenu)}
-    </div>
+    </>
   );
 }
 

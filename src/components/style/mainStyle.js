@@ -1,12 +1,21 @@
 import styled from "styled-components";
 import * as color from "./color";
 
-import { RiSearchLine, RiUserAddLine, RiChatNewLine, RiAddCircleLine } from "react-icons/ri";
+import {
+  RiSearchLine,
+  RiUserAddLine,
+  RiChatNewLine,
+  RiAddCircleLine,
+  RiPencilFill,
+  RiArrowGoBackLine,
+  RiCheckFill,
+  RiChat1Fill,
+} from "react-icons/ri";
 
 export const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
 `;
 export const Partition = styled.div`
   width: 100%;
@@ -17,7 +26,7 @@ export const Header = {
   Container: styled.div`
     display: flex;
     justify-content: space-between;
-    padding: 2rem 0 1rem 0;
+    padding: 2rem 0.5rem 1rem;
   `,
   Title: styled.h2`
     font-size: 1.5rem;
@@ -47,12 +56,13 @@ export const Header = {
     color: ${color.one};
   `,
   Input: styled.input`
-    width: 100%;
+    width: 90%;
     height: calc(2rem + 4px);
     border-radius: 2rem;
     border: 2px solid ${color.two};
     padding: 0.625rem 1.25rem;
-    margin-bottom: 0.5rem;
+    margin: 0 5% 0.5rem;
+
     font-size: 0.75rem;
   `,
   ResultContainer: styled.div`
@@ -87,10 +97,9 @@ export const Header = {
   `,
 };
 export const List = {
-  Container: styled.div`
-    padding-top: 0.5rem;
-  `,
+  Container: styled.div``,
   Title: styled.h1`
+    padding: 0.5rem;
     font-size: 0.8rem;
     color: #777;
     text-align: left;
@@ -98,7 +107,8 @@ export const List = {
 };
 export const Item = {
   Container: styled.div`
-    padding: 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
     display: flex;
     justify-content: left;
     align-items: center;
@@ -106,7 +116,8 @@ export const Item = {
     cursor: pointer;
 
     &:hover {
-      background-color: #777;
+      background-color: ${color.two};
+      color: #fff;
     }
   `,
   ImageBox: styled.div`
@@ -116,7 +127,6 @@ export const Item = {
     border: 1px solid #ccc;
     overflow: hidden;
   `,
-
   TextBox: styled.div`
     width: calc(100% - calc(${(props) => props.margin} + 0.5rem));
   `,
@@ -142,6 +152,100 @@ export const Detail = {
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: #ccc;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    cursor: initial;
+    background-color: ${color.one};
+  `,
+  Form: styled.form`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+  `,
+  ImageBox: styled.div`
+    width: 5rem;
+    height: 5rem;
+    border: 1px solid #fff;
+    border-radius: 35%;
+    overflow: hidden;  
+    }
+  `,
+  TextBox: styled.div`
+    max-width: 320px;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: #fff;
+  `,
+  Title: styled.h3`
+    font-size: 1.25rem;
+    font-weight: 400;
+  `,
+  Content: styled.p`
+    height: 20px;
+    text-align: center;
+    font-weight: 200;
+  `,
+  ContentInputBox: styled.div``,
+  ContentInput: styled.textarea`
+    width: fit-content;
+    min-height: 20px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+
+    &::after {
+      content: ${(props) => props.text};
+      background-color: red;
+    }
+  `,
+  ContentInputIcon: styled(RiPencilFill)`
+    margin-left: 0.25rem;
+  `,
+  BtnBox: styled.div`
+    display: flex;
+    gap: 2rem;
+  `,
+  GoBackBtn: styled(RiArrowGoBackLine)`
+  width: 2rem;
+  height: 2rem;
+  padding 0.25rem;
+  border: 1px solid #fff;
+  border-radius: 0.25rem;
+  
+  cursor: pointer;
+  color: #fff;
+  &:hover {
+    color: ${color.two};
+    border: 1px solid ${color.two};
+  }
+  `,
+  SubmitBtn: styled(RiCheckFill)`width: 2rem;
+  height: 2rem;
+  padding 0.25rem;
+  border: 1px solid #fff;
+  border-radius: 0.25rem;
+  
+  cursor: pointer;
+  color: #fff;
+  &:hover {
+    color: ${color.two};
+    border: 1px solid ${color.two};
+  }`,
+  ChatBtn: styled(RiChat1Fill)`
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    color: #fff;
+    &:hover {
+      color: ${color.two};
+    }
   `,
 };

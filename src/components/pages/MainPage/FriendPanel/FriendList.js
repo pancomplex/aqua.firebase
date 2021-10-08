@@ -1,15 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Friend from "./Friend";
 
 import { List } from "../../../style/mainStyle";
 
 function FriendList(props) {
-  console.log("list props", props.friendData);
-  console.log("list props", props.friendData[0]);
-  props.friendData.map((friend, index) => {
-    console.log("mappingData", friend);
-  });
   const renderFriends = () => {
     let friendArray = [];
     props.friendData.map((friend, index) => {

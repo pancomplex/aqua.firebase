@@ -39,16 +39,12 @@ function RegisterPage() {
         displayName: data.name,
         photoURL: `http://gravatar.com/avatar/${md5(createdUser.email)}?d=identicon`,
       });
-
       await set(ref(database, "users/" + createdUser.uid), {
         email: createdUser.email,
         name: createdUser.displayName,
         image: createdUser.photoURL,
-        // statusMsg: "",
+        friends: { JIgPFjBwBYP5qI00Lzy3bkahkA13: true }, // for Demo
       });
-      // set(ref(database, "users/" + createdUser.user.uid + "/friends"), {
-      //   "kimhyeon@kimhyeon.me의 uid": true,
-      // }); // for Demo
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -68,7 +64,7 @@ function RegisterPage() {
   return (
     <Auth.Wrapper>
       <Auth.Title>회원 가입</Auth.Title>
-      <Auth.Form className="registerForm" onSubmit={handleSubmit(onSubmit)}>
+      <Auth.Form onSubmit={handleSubmit(onSubmit)}>
         <Auth.WarningMsg style={{ textAlign: "right" }}>* 필수 입력</Auth.WarningMsg>
 
         <Auth.InputWrapper>

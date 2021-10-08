@@ -32,7 +32,7 @@ function FriendPanel() {
   useEffect(() => {
     addFriendListener();
     // removeFriendListener();
-  }, [console.log(friendList)]);
+  }, []);
 
   const addFriendListener = () => {
     let updatedFriendList = [];
@@ -46,20 +46,16 @@ function FriendPanel() {
   };
 
   // 친구 삭제시 업데이트 추후 추가 예정
-  // const removeFriendListener = () => {
-  //   onChildRemoved(friendListRef, (snapshot) => {
+  // const removeFriendListener = () => {};
 
-  //   });
-  // };
-
-  // Make Friend Data
-  const makeFriendData = (friendUidArray) => {
+  const makeFriendData = async (friendUidArray) => {
     let updatedFriendData = [];
-    friendUidArray.map((friendUid) => {
-      get(ref(database, "users/" + friendUid)).then((snapshot) => {
+    await Promise.all(
+      friendUidArray.map(async (friendUid) => {
+        let snapshot = await get(ref(database, "users/" + friendUid));
         updatedFriendData.push(snapshot.val());
-      });
-    });
+      })
+    );
     setFriendData(updatedFriendData);
   };
 
