@@ -45,9 +45,6 @@ function ChatPage() {
 
   useEffect(() => {
     addMessageListener();
-    return () => {
-      off(ref(database, "chatRooms/" + chatRoomId + "/messages"));
-    };
   }, [console.log(messages)]);
 
   const addMessageListener = () => {

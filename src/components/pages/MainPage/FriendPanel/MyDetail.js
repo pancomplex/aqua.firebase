@@ -39,6 +39,7 @@ function MyDetail(props) {
   // useRef
   const statusMsgRef = useRef();
   const inputOpenImageRef = useRef();
+  const inputTextRef = useRef();
   const submitRef = useRef();
 
   // useEffect
@@ -126,6 +127,7 @@ function MyDetail(props) {
             {inputMode ? (
               <Detail.ContentInput
                 {...register("statusMsg")}
+                ref={inputTextRef}
                 onChange={(e) => {
                   handleChangeStatusMsg(e);
                 }}
@@ -136,7 +138,12 @@ function MyDetail(props) {
               <Detail.Content>{updateStatusMsg}</Detail.Content>
             )}
           </Detail.ContentInputBox>
-          <Detail.ContentInputIcon onClick={handleInputIcon} />
+          <Detail.ContentInputIcon
+            onClick={async () => {
+              await handleInputIcon();
+              inputTextRef.current.focus();
+            }}
+          />
           {/* )} */}
         </Detail.TextBox>
         <Detail.BtnBox>
