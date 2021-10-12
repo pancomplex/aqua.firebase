@@ -47,7 +47,7 @@ export const Body = {
   Wrapper: styled.div`
     width: 100%;
     height: calc(100vh - 6rem);
-    padding: 0 1.5rem;
+    padding: 1rem 1.5rem 0;
     display: flex;
     flex-direction: column;
     gap: 1rem;

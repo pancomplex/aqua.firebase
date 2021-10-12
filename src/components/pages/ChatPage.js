@@ -2,15 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 
-import {
-  getDatabase,
-  ref,
-  get,
-  push,
-  update,
-  serverTimestamp,
-  onChildAdded,
-} from "firebase/database";
+import { getDatabase, ref, get, push, update, serverTimestamp, onValue } from "firebase/database";
 
 import ChatHeader from "./ChatPage/ChatHeader";
 import ChatBody from "./ChatPage/ChatBody";
@@ -48,10 +40,8 @@ function ChatPage() {
   }, [console.log(messages)]);
 
   const addMessageListener = () => {
-    let updateMessageList = [];
-    onChildAdded(ref(database, "chatRooms/" + chatRoomId + "/messages"), (snapshot) => {
-      updateMessageList.push(snapshot.val());
-      setMessages(updateMessageList);
+    onValue(ref(database, "chatRooms/" + chatRoomId + "/messages"), (snapshot) => {
+      setMessages(Object.values(snapshot.val()));
     });
   };
 
