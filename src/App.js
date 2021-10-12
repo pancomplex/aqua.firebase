@@ -48,16 +48,8 @@ function App() {
         <Route path="/register">
           <RegisterPage />
         </Route>
-        <Route path="/chat/:friendEmail">
+        <Route path="/chat/:friendUid">
           <ChatPage />
-        </Route>
-        <Route path="/main">
-          {/* 임시 메인 페이지 라우터*/}
-          <MainPage />
-        </Route>
-        <Route path="/loading">
-          {/* 임시 로딩 페이지 라우터*/}
-          <LoadingPage />
         </Route>
       </Switch>
     </div>

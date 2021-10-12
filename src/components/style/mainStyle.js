@@ -62,7 +62,6 @@ export const Header = {
     border: 2px solid ${color.two};
     padding: 0.625rem 1.25rem;
     margin: 0 5% 0.5rem;
-
     font-size: 0.75rem;
   `,
   ResultContainer: styled.div`
@@ -129,6 +128,9 @@ export const Item = {
   `,
   TextBox: styled.div`
     width: calc(100% - calc(${(props) => props.margin} + 0.5rem));
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
   `,
   Title: styled.h4`
     font-size: 1rem;
@@ -172,10 +174,11 @@ export const Detail = {
     height: 5rem;
     border: 1px solid #fff;
     border-radius: 35%;
-    overflow: hidden;  
-    }
+    overflow: hidden;
+    cursor: pointer;
   `,
   TextBox: styled.div`
+    position: relative;
     max-width: 320px;
     padding: 0 1rem;
     display: flex;
@@ -189,25 +192,41 @@ export const Detail = {
     font-weight: 400;
   `,
   Content: styled.p`
-    height: 20px;
-    text-align: center;
-    font-weight: 200;
-  `,
-  ContentInputBox: styled.div``,
-  ContentInput: styled.textarea`
     width: fit-content;
     min-height: 20px;
+    text-align: center;
+    font-weight: 200;
+    word-break: break-word;
+  `,
+  ContentInputBox: styled.div`
+    min-width: 40px;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `,
+  ContentInput: styled.textarea`
+    width: ${(props) => props.width + 16}px;
+    height: ${(props) => props.height}px;
+    min-height: 20px;
     background-color: transparent;
+    color: #fff;
     border: none;
     border-bottom: 1px solid #fff;
-
-    &::after {
-      content: ${(props) => props.text};
-      background-color: red;
-    }
+    text-align: center;
+    font-weight: 200;
+    overflow: hidden;
+    resize: none;
   `,
   ContentInputIcon: styled(RiPencilFill)`
-    margin-left: 0.25rem;
+    position: absolute;
+    bottom: 0;
+    right: -0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      color: ${color.two};
+    }
   `,
   BtnBox: styled.div`
     display: flex;
@@ -249,3 +268,4 @@ export const Detail = {
     }
   `,
 };
+Detail.ContentInput.defaultProps = { width: 40, height: 20 };

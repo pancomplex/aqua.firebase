@@ -7,9 +7,9 @@ function FriendDetail(props) {
   const history = useHistory();
 
   const handleOpenChat = () => {
-    alert(props.friend.email);
-    history.push(`/chat/${props.friend.email}`);
+    history.push(`/chat/${props.friend.uid}`);
   };
+
   return (
     <Detail.Container>
       <Detail.ImageBox>
@@ -17,7 +17,9 @@ function FriendDetail(props) {
       </Detail.ImageBox>
       <Detail.TextBox>
         <Detail.Title> {props.friend.name}</Detail.Title>
-        {props.friend.statusMsg && <Detail.Content>{props.friend.statusMsg}</Detail.Content>}
+        {props.friend.statusMessage && (
+          <Detail.Content>{props.friend.statusMessage}</Detail.Content>
+        )}
       </Detail.TextBox>
       <Detail.BtnBox>
         <Detail.GoBackBtn

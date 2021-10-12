@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useRef } from "react";
 
-function ChatInput() {
+import { Input } from "../../style/chatStyle";
+
+function ChatInput(props) {
+  const inputRef = useRef();
+
+  const handleSubmit = async () => {
+    await props.sendMessage(inputRef.current.value.trim());
+    inputRef.current.value = "";
+  };
+
   return (
-    <form style={{ display: "flex", justifyContent: "space-between" }}>
-      <input type="text" style={{ width: "calc(100% - 60px)" }} />
-      <input type="submit" style={{ width: 50 }} />
-    </form>
+    <Input.Form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
+      <Input.InputText type="text" ref={inputRef} />
+      <Input.Submit onClick={handleSubmit} />
+    </Input.Form>
   );
 }
 

@@ -1,86 +1,143 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { setPhotoURL, setStatusMsg } from "../../../../redux/actions/user_action";
 import { useForm } from "react-hook-form";
+import mime from "mime-types";
+
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getDatabase, ref as databaseRef, update } from "firebase/database";
+import { getAuth, updateProfile } from "firebase/auth";
 
 import { Detail } from "../../../style/mainStyle";
 
 function MyDetail(props) {
-  const myUid = props.currentUser.uid;
-  let inProcess = false;
+  const currentUser = props.currentUser;
 
+  // firebase
+  const storage = getStorage();
+  const database = getDatabase();
+  const auth = getAuth();
+
+  // redux
+  const dispatch = useDispatch();
+
+  // useState
+  const [imagePreview, setImagePreview] = useState();
+  const [inputMode, setInputMode] = useState(false);
+  const [updateStatusMsg, setUpdateStatusMsg] = useState(currentUser.statusMsg);
+  const [updateProfileImg, setUpdateProfileImg] = useState({});
+  const [inputStatusMsgSize, setInputStatusMsgSize] = useState({ width: 40, height: 20 });
+  const [inProcess, setInProcess] = useState(false);
+
+  // useForm
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+  } = useForm({ defaultValues: { statusMsg: updateStatusMsg }, mode: "onSubmit" });
 
-  const statusMsg = useRef();
+  // useRef
+  const statusMsgRef = useRef();
+  const inputOpenImageRef = useRef();
   const submitRef = useRef();
 
-  const handleChange = () => {
-    statusMsg.current = watch("statusMsg");
-    console.log(statusMsg.current);
+  // useEffect
+  useEffect(() => {
+    setInputStatusMsgSize({
+      width: statusMsgRef.current.offsetWidth,
+      height: statusMsgRef.current.offsetHeight,
+    });
+  }, []);
+
+  const handleOpenImageRef = () => {
+    inputOpenImageRef.current.click();
+  };
+
+  const handleChangeProfileImage = (e) => {
+    const file = e.target.files[0];
+    const metadata = { contentType: mime.lookup(file.name) };
+
+    if (e) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        setImagePreview(e.target.result);
+      };
+    }
+    setUpdateProfileImg({ data: file, metadata: metadata });
+  };
+
+  const handleInputIcon = () => {
+    setInputMode((prev) => !prev);
+  };
+
+  const handleChangeStatusMsg = (e) => {
+    setUpdateStatusMsg(e.target.value);
+    setInputStatusMsgSize({
+      width: statusMsgRef.current.offsetWidth,
+      height: statusMsgRef.current.offsetHeight,
+    });
   };
 
   const handleSubmitRef = () => {
     submitRef.current.click();
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
+    setInProcess(true);
+
     try {
-      // setLoading(true);
-      // await createUserWithEmailAndPassword(auth, data.email, data.password);
-      // let createdUser = auth.currentUser;
-      // await updateProfile(createdUser, {
-      //   displayName: data.name,
-      //   photoURL: `http://gravatar.com/avatar/${md5(createdUser.email)}?d=identicon`,
-      // });
-      // await set(ref(database, "users/" + createdUser.uid), {
-      //   email: createdUser.email,
-      //   name: createdUser.displayName,
-      //   image: createdUser.photoURL,
-      //   friends: { JIgPFjBwBYP5qI00Lzy3bkahkA13: true }, // for Demo
-      // });
-      // setLoading(false);
+      if (updateProfileImg.data) {
+        const uploadTaskSnapshot = await uploadBytes(
+          storageRef(storage, `user_image/${currentUser.uid}.jpg`),
+          updateProfileImg.data,
+          updateProfileImg.metadata
+        );
+        const downloadURL = await getDownloadURL(uploadTaskSnapshot.ref);
+        await updateProfile(auth.currentUser, {
+          photoURL: downloadURL,
+        });
+        await update(databaseRef(database, "users/" + currentUser.uid), {
+          image: downloadURL,
+        });
+        dispatch(setPhotoURL(downloadURL));
+      }
+      await update(databaseRef(database, "users/" + currentUser.uid), {
+        statusMessage: updateStatusMsg,
+      });
+      dispatch(setStatusMsg(updateStatusMsg));
+
+      props.hideProfile();
     } catch (error) {
-      //   console.log(error);
-      //   if (error.message == "Firebase: Error (auth/email-already-in-use).") {
-      //     setErrorFromSubmit("이미 가입된 이메일입니다.");
-      //   } else {
-      //     setErrorFromSubmit(error.message);
-      //   }
-      //   setLoading(false);
-      //   console.log("error", error.message);
-      //   setTimeout(() => {
-      //     setErrorFromSubmit("");
-      //   }, 5000);
+      console.log(error);
     }
+    setInProcess(false);
   };
 
   return (
     <Detail.Container>
       <Detail.Form onSubmit={handleSubmit(onSubmit)}>
-        <Detail.ImageBox>
-          <img src={props.currentUser.photoURL} />
+        <Detail.ImageBox onClick={handleOpenImageRef}>
+          <img src={imagePreview ?? currentUser.photoURL} />
         </Detail.ImageBox>
         <Detail.TextBox>
-          <Detail.Title> {props.currentUser.displayName}</Detail.Title>
-          <Detail.Content>안녕하세요</Detail.Content>
-          {props.currentUser.statusMsg ? (
-            <Detail.Content>{props.currentUser.statusMsg}</Detail.Content>
-          ) : (
-            <Detail.ContentInputBox>
+          <Detail.Title> {currentUser.displayName}</Detail.Title>
+          <Detail.ContentInputBox>
+            {inputMode ? (
               <Detail.ContentInput
-                type="text"
                 {...register("statusMsg")}
-                onChange={() => {
-                  handleChange();
+                onChange={(e) => {
+                  handleChangeStatusMsg(e);
                 }}
-                text={statusMsg.current}
+                width={inputStatusMsgSize.width}
+                height={inputStatusMsgSize.height}
               />
-              <Detail.ContentInputIcon />
-            </Detail.ContentInputBox>
-          )}
+            ) : (
+              <Detail.Content>{updateStatusMsg}</Detail.Content>
+            )}
+          </Detail.ContentInputBox>
+          <Detail.ContentInputIcon onClick={handleInputIcon} />
+          {/* )} */}
         </Detail.TextBox>
         <Detail.BtnBox>
           <Detail.GoBackBtn
@@ -93,9 +150,23 @@ function MyDetail(props) {
               handleSubmitRef();
             }}
           />
-          <input type="submit" ref={submitRef} disabled={inProcess} style={{ display: "none" }} />
         </Detail.BtnBox>
+        <input
+          type="file"
+          name="image"
+          accept="image/jpeg, image/png"
+          ref={inputOpenImageRef}
+          onChange={handleChangeProfileImage}
+          style={{ display: "none" }}
+        />
+        <input type="submit" ref={submitRef} disabled={inProcess} style={{ display: "none" }} />
       </Detail.Form>
+      <Detail.Content
+        ref={statusMsgRef}
+        style={{ position: "fixed", bottom: 0, right: 0, color: "transparent" }}
+      >
+        {updateStatusMsg}
+      </Detail.Content>
     </Detail.Container>
   );
 }

@@ -23,7 +23,7 @@ function Friend(props) {
         </Item.ImageBox>
         <Item.TextBox>
           <Item.Title> {props.friend.name}</Item.Title>
-          {props.friend.statusMsg && <Item.Content>{props.friend.statusMsg}</Item.Content>}
+          {props.friend.statusMessage && <Item.Content>{props.friend.statusMessage}</Item.Content>}
         </Item.TextBox>
       </Item.Container>
       {showProfile && <FriendDetail friend={props.friend} hideProfile={hideProfile} />}

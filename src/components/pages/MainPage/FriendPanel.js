@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 
-import { getDatabase, get, ref, onChildAdded, onChildRemoved } from "firebase/database";
+import { getDatabase, get, ref, onChildAdded, onChildRemoved, off } from "firebase/database";
 
 import FriendHeader from "./FriendPanel/FriendHeader";
 import MyProfile from "./FriendPanel/MyProfile";
 import FriendList from "./FriendPanel/FriendList";
 
 import * as Main from "../../style/mainStyle";
-
-import testFriendImage1 from "../../../assets/images/UTH.png"; // 임시
-import testFriendImage2 from "../../../assets/images/KJG.png"; // 임시
-import testFriendImage3 from "../../../assets/images/CGS.png"; // 임시
-import { RiContactsBookLine } from "react-icons/ri";
 
 function FriendPanel() {
   // useSelector
@@ -23,7 +18,7 @@ function FriendPanel() {
   const friendListRef = ref(database, "users/" + currentUser.uid + "/friends");
 
   // useState
-  const [friendList, setFriendList] = useState([]);
+
   const [friendData, setFriendData] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [searchedFriendData, setSearchedFriendData] = useState([]);
@@ -31,6 +26,9 @@ function FriendPanel() {
   // useEffect
   useEffect(() => {
     addFriendListener();
+    return () => {
+      off(friendListRef);
+    };
     // removeFriendListener();
   }, []);
 
@@ -40,20 +38,20 @@ function FriendPanel() {
       updatedFriendList.push(snapshot.key);
       const friendSet = new Set(updatedFriendList);
       updatedFriendList = [...friendSet];
-      setFriendList(updatedFriendList);
       makeFriendData(updatedFriendList);
     });
   };
 
-  // 친구 삭제시 업데이트 추후 추가 예정
+  //  친구 삭제시 업데이트 추후 추가 예정
   // const removeFriendListener = () => {};
 
   const makeFriendData = async (friendUidArray) => {
     let updatedFriendData = [];
     await Promise.all(
-      friendUidArray.map(async (friendUid) => {
+      friendUidArray.map(async (friendUid, i) => {
         let snapshot = await get(ref(database, "users/" + friendUid));
         updatedFriendData.push(snapshot.val());
+        updatedFriendData[i]["uid"] = friendUid;
       })
     );
     setFriendData(updatedFriendData);

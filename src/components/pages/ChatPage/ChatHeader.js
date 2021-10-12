@@ -1,14 +1,37 @@
-import React from "react";
-import { useParams } from "react-router";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
 
-function ChatHeader() {
-  const { friendEmail } = useParams();
+import { Header } from "../../style/chatStyle";
+
+function ChatHeader(props) {
+  const history = useHistory();
+
+  const [searchHeader, setSearchHeader] = useState(false);
+
+  const handleClickGoBackBtn = () => {
+    history.goBack();
+  };
+  const handleClickSearchBtn = () => {
+    setSearchHeader((prev) => {
+      return !prev;
+    });
+  };
+
   return (
-    <div>
-      ChatHeader
-      <br />
-      {friendEmail}님과의 채팅
-    </div>
+    <Header.Wrapper>
+      <Header.GoBackBtn onClick={handleClickGoBackBtn} />
+      {searchHeader ? (
+        <Header.SearchInput
+          onChange={(e) => {
+            props.handleSearchMessage(e.target.value.trim());
+          }}
+        />
+      ) : (
+        <Header.FriendName>{props.currentFriend?.name} 님 과의 대화</Header.FriendName>
+      )}
+
+      <Header.SearchBtn onClick={handleClickSearchBtn} />
+    </Header.Wrapper>
   );
 }
 
