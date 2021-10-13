@@ -3,7 +3,6 @@ import { useHistory, Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser, clearUser } from "./redux/actions/user_action";
 
-import firebase from "./firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import MainPage from "./components/pages/MainPage";

@@ -103,6 +103,17 @@ export const List = {
     color: #777;
     text-align: left;
   `,
+  Empty: styled.p`
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    background-color: ${color.two};
+    color: #fff;
+  `,
 };
 export const Item = {
   Container: styled.div`
@@ -135,10 +146,21 @@ export const Item = {
   Title: styled.h4`
     font-size: 1rem;
   `,
+  LastMessage: styled.div`
+    display: flex;
+    justify-content: space-between;
+  `,
   Content: styled.p`
     overflow-x: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  `,
+  Time: styled.span`
+    color: #777;
+    font-size: 0.75rem;
+    font-weight: 200;
+    min-width: 3.5rem;
+    text-align: right;
   `,
 };
 Item.ImageBox.defaultProps = {

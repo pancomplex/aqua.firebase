@@ -1,65 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 
-function Chat(props) {
-  const [showProfile, setShowProfile] = useState(false);
+import { getDatabase, get, ref } from "firebase/database";
 
+import { Item } from "../../../style/mainStyle";
+
+function Chat(props) {
   const history = useHistory();
+
+  // firebase
+  const database = getDatabase();
+  const friendInfoRef = ref(database, "users/" + props.chat.friendId);
+
   const handleOpenChat = () => {
-    alert(props.chat.email);
-    history.push(`/chat/${props.chat.email}`);
+    history.push(`/chat/${props.chat.friend.uid}`);
   };
+
+  const renderTime = () => {
+    const now = new Date();
+    const messageTime = new Date(props.chat.lastUpdate.timestamp);
+    if (now.getDate() != messageTime.getDate()) {
+      return `${messageTime.getMonth() + 1}월 ${messageTime.getDate()}일`;
+    } else {
+      return `${messageTime.getHours()}:${messageTime.getMinutes()}`;
+    }
+  };
+
   return (
-    <div
-      style={{ padding: "10px 0" }} //호버시 배경 회색 추가 필요
-      onDoubleClick={() => {
+    <Item.Container
+      onClick={() => {
         handleOpenChat();
       }}
     >
-      <div style={{ display: "flex", justifyContent: "left", alignItems: "center" }}>
-        {/* <Image
-          src={props.chat.profileImage}
-          width={50}
-          height={50}
-          roundedCircle
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            setShowProfile((prev) => !prev);
-          }}
-        /> */}
-        <div
-          style={{
-            width: "calc(100% - 130px)",
-            marginLeft: 10,
-          }}
-        >
-          <h4 style={{ fontSize: "1rem", fontWeight: 600 }}>{props.chat.name}</h4>
-          {props.chat.statusMessage && (
-            <p
-              style={{
-                overflowX: "hidden",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {props.chat.statusMessage}
-            </p>
-          )}
-        </div>
-        <div
-          style={{
-            width: 70,
-            marginBottom: 16,
-            textAlign: "right",
-            fontSize: 12,
-            color: "#ccc",
-          }}
-        >
-          <span>오전 12:00</span> {/* 임시 */}
-        </div>
-      </div>
-      {showProfile && <div style={{ backgroundColor: "#ececec" }}>Profile</div> /* modal? */}
-    </div>
+      <Item.ImageBox>
+        <img src={props.chat.friend.image} />
+      </Item.ImageBox>
+      <Item.TextBox>
+        <Item.Title> {props.chat.friend.name}</Item.Title>
+        {props.chat.lastUpdate && (
+          <Item.LastMessage>
+            <Item.Content>{props.chat.lastUpdate.content}</Item.Content>{" "}
+            <Item.Time>{renderTime()}</Item.Time>
+          </Item.LastMessage>
+        )}
+      </Item.TextBox>
+    </Item.Container>
   );
 }
 

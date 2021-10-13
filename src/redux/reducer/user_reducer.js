@@ -1,10 +1,4 @@
-import {
-  SET_USER,
-  CLEAR_USER,
-  SET_PHOTO_URL,
-  SET_STATUS_MSG,
-  SET_FRIEND_LIST,
-} from "../actions/types";
+import { SET_USER, CLEAR_USER, SET_PHOTO_URL, SET_STATUS_MSG } from "../actions/types";
 
 const initialUserState = {
   currentUser: null,

@@ -1,51 +1,79 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+
+import { getDatabase, ref, onValue, get, off } from "firebase/database";
 
 import ChatHeader from "./ChatPanel/ChatHeader";
 import ChatList from "./ChatPanel/ChatList";
 
 import * as Main from "../../style/mainStyle";
 
-import testFriendImage1 from "../../../assets/images/UTH.png"; // 임시
-import testFriendImage2 from "../../../assets/images/KJG.png"; // 임시
-import testFriendImage3 from "../../../assets/images/CGS.png"; // 임시
-
 function ChatPanel() {
-  const [messageTotal, setMessageTotal] = useState(0);
+  // useSelector
+  const currentUser = useSelector((state) => state.user.currentUser);
 
+  // firebase
+  const database = getDatabase();
+  const chatListRef = ref(database, "users/" + currentUser?.uid + "/chats");
+
+  // useState
+  const [chatData, setChatData] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [chatData, setChatData] = useState([
-    {
-      name: "엄태혁",
-      email: "test1@test.test",
-      statusMessage: "test",
-      profileImage: testFriendImage1,
-    },
-    {
-      name: "김정국",
-      email: "test2@test.test",
-      statusMessage: "test",
-      profileImage: testFriendImage2,
-    },
-    {
-      name: "차광성",
-      email: "test3@test.test",
-      statusMessage:
-        "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
-      profileImage: testFriendImage3,
-    },
-  ]);
   const [searchedChatData, setSearchedChatData] = useState([]);
+
+  // useEffect
+  useEffect(() => {
+    addChatListener();
+    return () => {
+      off(chatListRef);
+    };
+  }, []);
+
+  const addChatListener = async () => {
+    await onValue(chatListRef, async (snapshot) => {
+      if (snapshot.val()) {
+        makeChatData(Object.keys(snapshot.val()));
+      }
+    });
+  };
+
+  const makeChatData = async (chatIdArray, i) => {
+    let updatedChatData = [];
+    await Promise.all(
+      chatIdArray.map(async (chatId, i) => {
+        let snapshot = await get(ref(database, "chatRooms/" + chatId));
+        let chat = snapshot.val();
+        let friend = await getFriendInfo(chatId);
+        updatedChatData.push({ ...chat, friend });
+      })
+    );
+    setChatData(updatedChatData);
+  };
+
+  const getFriendInfo = async (chatId) => {
+    const friendId = getFriendIdFromChatId(chatId);
+    let snapshot = await get(ref(database, "users/" + friendId));
+    const friendInfo = { ...snapshot.val(), uid: friendId };
+    return friendInfo;
+  };
+  const getFriendIdFromChatId = (chatId) => {
+    if (currentUser.uid == chatId.substring(0, 28)) {
+      return chatId.substring(28);
+    } else {
+      return chatId.substring(0, 28);
+    }
+  };
 
   const renderSearched = (input) => {
     setIsSearching(true);
 
     if (input) {
       let chatDataArray = [...chatData];
-      console.log(input);
+
       setSearchedChatData(
         chatDataArray.filter((chat) => {
           let regex = new RegExp(input);
-          return chat.name.search(regex) != -1;
+          return chat.friend.name.search(regex) != -1;
         })
       );
     } else {

@@ -58,6 +58,7 @@ export const Body = {
     width: fit-content;
     max-width: 80%;
     display: flex;
+    align-items: end;
     gap: 0.5rem;
     &.mine {
       align-self: end;
@@ -96,6 +97,12 @@ export const Body = {
     color: #777;
     font-size: 0.75rem;
     font-weight: 200;
+    min-width: 3.5rem;
+    margin-bottom: 0.25rem;
+
+    &.mine {
+      text-align: right;
+    }
   `,
 };
 export const Input = {

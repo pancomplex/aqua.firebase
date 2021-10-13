@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { getDatabase, get, ref, onChildAdded, onChildRemoved, off } from "firebase/database";
@@ -45,13 +45,13 @@ function FriendPanel() {
   //  친구 삭제시 업데이트 추후 추가 예정
   // const removeFriendListener = () => {};
 
-  const makeFriendData = async (friendUidArray) => {
+  const makeFriendData = async (friendIdArray) => {
     let updatedFriendData = [];
     await Promise.all(
-      friendUidArray.map(async (friendUid, i) => {
-        let snapshot = await get(ref(database, "users/" + friendUid));
+      friendIdArray.map(async (friendId, i) => {
+        let snapshot = await get(ref(database, "users/" + friendId));
         updatedFriendData.push(snapshot.val());
-        updatedFriendData[i]["uid"] = friendUid;
+        updatedFriendData[i]["uid"] = friendId;
       })
     );
     setFriendData(updatedFriendData);

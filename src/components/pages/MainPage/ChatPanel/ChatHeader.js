@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { BiSearch, BiCommentAdd } from "react-icons/bi";
+
 import { Header } from "../../../style/mainStyle";
 
 function ChatHeader(props) {
   const [headerMenu, setHeaderMenu] = useState("");
+
   const handleHeaderMenuChange = (menu) => {
     if (menu == headerMenu) {
       setHeaderMenu("");
@@ -16,82 +17,18 @@ function ChatHeader(props) {
     switch (headerMenu) {
       case "채팅 찾기":
         return (
-          <form
-            style={{
-              padding: "10px 0",
-              display: "flex",
-              justifyContent: "right",
-              alignItems: "center",
-              gap: 10,
+          <Header.Input
+            type="text"
+            onChange={(e) => {
+              handleSearchChat(e);
             }}
-          >
-            <input
-              type="text"
-              onChange={(e) => {
-                handleSearchChat(e);
-              }}
-              placeholder="이름으로 채팅 검색"
-              style={{
-                width: "50%",
-                height: 32,
-                borderRadius: 20,
-                border: "2px solid skyblue",
-                padding: "5px 10px",
-                fontSize: 12,
-              }}
-            ></input>
-          </form>
+            placeholder="친구 이름으로 채팅 검색"
+          ></Header.Input>
         );
-        break;
 
-      case "새 채팅":
-        // return (
-        //   <>
-        //     <form
-        //       style={{
-        //         padding: "10px 0",
-        //         display: "flex",
-        //         justifyContent: "right",
-        //         alignItems: "center",
-        //         gap: 10,
-        //       }}
-        //     >
-        //       <input
-        //         type="text"
-        //         onChange={(e) => {
-        //           handlePostAddFriend(e);
-        //         }}
-        //         placeholder="Email로 친구 추가"
-        //         style={{
-        //           width: "50%",
-        //           height: 32,
-        //           borderRadius: 20,
-        //           border: "2px solid skyblue",
-        //           padding: "5px 10px",
-        //           fontSize: 12,
-        //         }}
-        //       ></input>
-        //       <input
-        //         type="submit"
-        //         onClick={(e) => {
-        //           handleAddFriend(e);
-        //         }}
-        //         value="추가"
-        //         style={{
-        //           height: 32,
-        //           borderRadius: 20,
-        //           border: "none",
-        //           backgroundColor: "skyblue",
-        //           padding: "5px 10px",
-        //           fontSize: 12,
-        //           color: "#fff",
-        //         }}
-        //       ></input>
-        //     </form>
-        //     {searchedFriendFromServer}
-        //   </>
-        // );
-        break;
+      // case "새 채팅":
+      //   return <></>;
+
       default:
     }
   };
@@ -101,50 +38,8 @@ function ChatHeader(props) {
     props.renderSearched(input);
   };
 
-  // const searchedFriendFromServer = null;
-  // const handlePostAddFriend = (e) => {
-  //   console.log(e.target.value);
-  //   axios
-  //     .get("/search_friend")
-  //     .then((response) => {
-  //       console.log(response);
-  //       // 여기에 친구추가 전처리(검색) 작성
-  //       searchedFriendFromServer = (
-  //         <div
-  //           style={{
-  //             paddingBottom: "10px",
-  //             display: "flex",
-  //             justifyContent: "right",
-  //             alignItems: "center",
-  //             gap: 10,
-  //           }}
-  //         >
-  //           {/* 여기에 검색된 친구 출력 */}
-  //         </div>
-  //       );
-  //     })
-  //     .catch(function (error) {
-  //       alert(`친구 정보 요청 실패
-  //   ${error}`);
-  //     });
-  // };
-
-  // const handleAddFriend = (e) => {
-  //   e.preventDefault();
-  //   axios
-  //     .get("/add_friend")
-  //     .then((response) => {
-  //       console.log(response);
-  //       // 여기에 친구추가 작성
-  //     })
-  //     .catch(function (error) {
-  //       alert(`친구 추가 실패
-  //   ${error}`);
-  //     });
-  // };
-
   return (
-    <div>
+    <>
       <Header.Container>
         <Header.Title>채팅</Header.Title>
         <Header.Buttons>
@@ -154,15 +49,15 @@ function ChatHeader(props) {
             }}
           />
 
-          <Header.AddChatBtn
+          {/* <Header.AddChatBtn
             onClick={() => {
               handleHeaderMenuChange("새 채팅");
             }}
-          />
+          /> */}
         </Header.Buttons>
       </Header.Container>
       {headerMenu && renderHeaderMenu(headerMenu)}
-    </div>
+    </>
   );
 }
 

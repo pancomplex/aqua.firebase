@@ -5,8 +5,6 @@ import Message from "./Message";
 import { Body } from "../../style/chatStyle";
 
 function ChatBody(props) {
-  console.log("in ChatBody", props.messages);
-
   const bodyEnd = useRef();
   useEffect(() => {
     bodyEnd.current.scrollIntoView();

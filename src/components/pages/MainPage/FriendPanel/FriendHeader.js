@@ -38,7 +38,6 @@ function FriendHeader(props) {
             placeholder="이름으로 친구 검색"
           ></Header.Input>
         );
-        break;
 
       case "친구 추가":
         return (
@@ -53,7 +52,7 @@ function FriendHeader(props) {
             {searchedFriendFromServer && renderResult()}
           </>
         );
-        break;
+
       default:
     }
   };

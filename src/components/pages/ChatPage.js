@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 
-import { getDatabase, ref, get, push, update, serverTimestamp, onValue } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  get,
+  push,
+  update,
+  serverTimestamp,
+  onValue,
+  off,
+} from "firebase/database";
 
 import ChatHeader from "./ChatPage/ChatHeader";
 import ChatBody from "./ChatPage/ChatBody";
@@ -21,7 +30,7 @@ function ChatPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(async () => {
-    const friend = await get(ref(database, "users/" + friendUid)).then((dataSnapshot) => {
+    await get(ref(database, "users/" + friendUid)).then((dataSnapshot) => {
       setCurrentFriend(dataSnapshot.val());
     });
   }, []);
@@ -37,11 +46,17 @@ function ChatPage() {
 
   useEffect(() => {
     addMessageListener();
-  }, [console.log(messages)]);
+    return () => {
+      off(ref(database, "chatRooms/" + chatRoomId + "/messages"));
+      setMessages([]);
+    };
+  }, [console.log(!messages[0])]);
 
   const addMessageListener = () => {
     onValue(ref(database, "chatRooms/" + chatRoomId + "/messages"), (snapshot) => {
-      setMessages(Object.values(snapshot.val()));
+      if (snapshot.val()) {
+        setMessages(Object.values(snapshot.val()));
+      }
     });
   };
 
@@ -77,7 +92,12 @@ function ChatPage() {
       };
       setIsLoading(true);
       await push(ref(database, "chatRooms/" + chatRoomId + "/messages"), message);
-      await update(ref(database, "chatRooms/" + chatRoomId), { lastUpdate: message.timestamp });
+      await update(ref(database, "chatRooms/" + chatRoomId), { lastUpdate: message });
+      if (!messages[0]) {
+        await update(ref(database, "users/" + currentUser.uid + "/chats"), { [chatRoomId]: true });
+        console.log({ [chatRoomId]: true });
+        await update(ref(database, "users/" + friendUid + "/chats"), { [chatRoomId]: true });
+      }
       setIsLoading(false);
     }
   };
