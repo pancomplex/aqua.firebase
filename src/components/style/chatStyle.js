@@ -55,6 +55,7 @@ export const Body = {
     background: ${color.three};
   `,
   MessageWrapper: styled.div`
+    width: 100%;
     display: flex;
     align-items: end;
     gap: 0.5rem;
