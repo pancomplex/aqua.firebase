@@ -50,7 +50,7 @@ function ChatPage() {
       off(ref(database, "chatRooms/" + chatRoomId + "/messages"));
       setMessages([]);
     };
-  }, [console.log(!messages[0])]);
+  }, []);
 
   const addMessageListener = () => {
     onValue(ref(database, "chatRooms/" + chatRoomId + "/messages"), (snapshot) => {
@@ -95,7 +95,6 @@ function ChatPage() {
       await update(ref(database, "chatRooms/" + chatRoomId), { lastUpdate: message });
       if (!messages[0]) {
         await update(ref(database, "users/" + currentUser.uid + "/chats"), { [chatRoomId]: true });
-        console.log({ [chatRoomId]: true });
         await update(ref(database, "users/" + friendUid + "/chats"), { [chatRoomId]: true });
       }
       setIsLoading(false);

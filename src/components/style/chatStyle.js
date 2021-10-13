@@ -55,8 +55,6 @@ export const Body = {
     background: ${color.three};
   `,
   MessageWrapper: styled.div`
-    width: fit-content;
-    max-width: 80%;
     display: flex;
     align-items: end;
     gap: 0.5rem;
@@ -75,6 +73,7 @@ export const Body = {
     overflow: hidden;
   `,
   Message: styled.p`
+    max-width: calc(100% - 6.5rem);
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
