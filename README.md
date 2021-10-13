@@ -4,6 +4,7 @@
 
 ---
 
+
 ## Demo
 
 https://pancomplex.github.io/aqua.demo/
@@ -11,11 +12,13 @@ https://pancomplex.github.io/aqua.demo/
 >- 추후 PWA로 모바일 배포를 목적으로 개발했기 때문에 UI가 모바일 화면에 최적화 되어있습니다.
 
 
+
 ## Usage
 
-> git clone https://github.com/pancomplex/aqua.firebase.git
-> cd aqua.firbase
-> npm start
+> git clone https://github.com/pancomplex/aqua.firebase.git  
+> cd aqua.firbase  
+> npm start  
+
 
 ---
 
