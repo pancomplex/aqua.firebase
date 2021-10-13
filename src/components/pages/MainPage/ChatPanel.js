@@ -83,7 +83,6 @@ function ChatPanel() {
   return (
     <Main.Wrapper>
       <ChatHeader renderSearched={renderSearched} />
-
       <ChatList chatData={isSearching ? searchedChatData : chatData} />
     </Main.Wrapper>
   );

@@ -21,7 +21,15 @@ function Message(props) {
     if (now.getDate() != messageTime.getDate()) {
       return `${messageTime.getMonth() + 1}월 ${messageTime.getDate()}일`;
     } else {
-      return `${messageTime.getHours()}:${messageTime.getMinutes()}`;
+      if (messageTime.getHours() < 10 && messageTime.getMinutes() < 10) {
+        return `0${messageTime.getHours()}:0${messageTime.getMinutes()}`;
+      } else if (messageTime.getHours() > 10 && messageTime.getMinutes() < 10) {
+        return `${messageTime.getHours()}:0${messageTime.getMinutes()}`;
+      } else if (messageTime.getHours() < 10 && messageTime.getMinutes() > 10) {
+        return `0${messageTime.getHours()}:${messageTime.getMinutes()}`;
+      } else {
+        return `${messageTime.getHours()}:${messageTime.getMinutes()}`;
+      }
     }
   };
 
